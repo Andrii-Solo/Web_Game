@@ -3,8 +3,12 @@ let game
 var coldown_desh = 10
 var desh_Length = 20 
 var last_direction = true
-var isEnemiAlive = [1, 1, 1]
+var isEnemiAlive = [0, 0, 0]
 var shootCoolDown = 0
+
+var coldown_jump = -1
+
+
 const gameOptions = 
 {
     dudeGravity: 800,
@@ -324,8 +328,17 @@ class PlayGame extends Phaser.Scene {
             else{
                 this.dude.anims.play("jump_right", true)
             }
-            this.dude.body.velocity.y = -gameOptions.dudeGravity
+
+            this.dude.body.velocity.y = -gameOptions.dudeGravity*0.75
+            coldown_jump = 20
+            
         }
+        if(this.cursors.up.isDown && coldown_jump > 0){
+            coldown_jump -= 1
+            this.dude.body.velocity.y -= 22
+        }
+
+
         shootCoolDown -= 1
         if(shootCoolDown <= 0)
         {
