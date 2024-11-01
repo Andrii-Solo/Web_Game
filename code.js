@@ -15,6 +15,12 @@ const gameOptions =
     dudeSpeed: 300
 }
 
+
+
+
+
+
+
 window.onload = function()
 {
     let gameConfig = {
@@ -311,6 +317,10 @@ class PlayGame extends Phaser.Scene {
                 this.dude.anims.play("desh_right", true)
             }
             this.dude.body.velocity.x *=3 
+            if(this.dude.body.velocity.x > 900)
+            {
+                this.dude.body.velocity.x = 900   
+            }
             desh_Length -= 1
             if(desh_Length <= 0){
                 coldown_desh = 20
