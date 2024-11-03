@@ -1,12 +1,16 @@
 let game 
 
-var coldown_desh = 10
+var coldown_desh = false
 var desh_Length = 20 
 var last_direction = true
 var isEnemiAlive = [0, 0, 0]
 var shootCoolDown = 0
 
 var coldown_jump = -1
+
+
+var desh_event;
+
 
 
 const gameOptions = 
@@ -86,6 +90,12 @@ class PlayGame extends Phaser.Scene {
         this.load.image("bullet", "./img/bulet.png", 
             {frameWidth: 10, frameHeight: 10})  
 
+    }
+
+    coolDown_desh(){
+        console.log("The desh cooldown is successful")
+        coldown_desh = false
+        desh_event = this.time.delayedCall(1000, this.coolDown_desh, [], this)
     }
 
 
@@ -263,6 +273,11 @@ class PlayGame extends Phaser.Scene {
         this.addEnemi(1000, 100)
         this.addEnemi(200, 100)
         this.addEnemi(1800, 100)
+
+
+        desh_event = this.time.delayedCall(3000, this.coolDown_desh, [], this)
+
+
     }
     update()
     {
@@ -277,8 +292,7 @@ class PlayGame extends Phaser.Scene {
             }
             else{
                 this.dude.anims.play("jump_left", true)
-            }
-            coldown_desh -= 1     
+            }   
         }
         else if(this.cursors.right.isDown)
         {
@@ -290,8 +304,7 @@ class PlayGame extends Phaser.Scene {
             }
             else{
                 this.dude.anims.play("jump_right", true)
-            }
-            coldown_desh = coldown_desh - 1   
+            } 
         }
         else{
             if(this.dude.body.touching.down){
@@ -308,7 +321,8 @@ class PlayGame extends Phaser.Scene {
             
         }
         let keyC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C);
-        if(keyC.isDown && coldown_desh <= 0){
+        if(keyC.isDown && coldown_desh == false){
+            console.log("desh successful")
             if(this.cursors.left.isDown)
             {
                 this.dude.anims.play("desh_left", true)
@@ -323,8 +337,9 @@ class PlayGame extends Phaser.Scene {
             }
             desh_Length -= 1
             if(desh_Length <= 0){
-                coldown_desh = 20
+                coldown_desh = true
                 desh_Length = 20
+                desh_event.getProgress()
             }
             
         }
